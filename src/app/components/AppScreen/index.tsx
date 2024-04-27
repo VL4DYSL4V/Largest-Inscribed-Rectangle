@@ -18,8 +18,6 @@ export const AppScreenContentWrapper = styled.div`
   
   width: ${ComponentSize.COEFFICIENT_OF_MAIN_PANE * 100}%;
   height: 100%;
-  
-  border: 1px solid black;
 `;
 
 export const AppScreenControlsText = styled.div`

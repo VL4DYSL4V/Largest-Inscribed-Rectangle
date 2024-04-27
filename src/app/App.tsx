@@ -11,10 +11,10 @@ import {SvgContainer} from "./components/SvgContainer";
 import {SvgPolygon} from "./components/SvgPolygon";
 import {ComponentIds} from "./enums/componentIds";
 import {getRandomPolygon} from "./service/polygonService";
+import {PolygonParams} from "./types/polygonTypes";
 
-const getPolygonParams = (): {
-    width: number, height: number, center: [number, number]
-} => {
+
+const getPolygonParams = (): PolygonParams => {
     const polygonBoundingRect = document.getElementById(ComponentIds.SVG_POLYGON)?.getBoundingClientRect() || {
         width: 0,
         height: 0,
@@ -35,6 +35,7 @@ const getPolygonParams = (): {
 function App() {
     const [amountOfPoints, setAmountOfPoints] = React.useState<number>(20);
     const [polygonPoints, setPolygonPoints] = React.useState<Array<Array<number>>>([]);
+    const [polygonParams, setPolygonParams] = React.useState<PolygonParams | {}>({});
 
     const onInputAmountOfPoints = (value: string) => {
         const asNumber = Number(value);
@@ -49,8 +50,10 @@ function App() {
         const polygon = getRandomPolygon({
             sides: amountOfPoints,
             center: polygonParams.center,
-            area: 0.33 * polygonParams.width * polygonParams.height,
+            centerPadding: Math.min(polygonParams.width / 7, polygonParams.height / 7),
+            maxRadius: Math.min(polygonParams.width / 2.3, polygonParams.height / 2.3),
         });
+        setPolygonParams(polygonParams);
         setPolygonPoints(polygon);
     }
 
