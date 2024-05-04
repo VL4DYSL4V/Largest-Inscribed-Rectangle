@@ -74,7 +74,11 @@ function App() {
         setPolygonBounds(polygonBounds);
         const triangulation = triangulate({ polygon });
         setTriangulation(triangulation);
-        const innerTriangulation = getInnerTriangulation({ polygon, convexTriangulation: triangulation });
+        const innerTriangulation = getInnerTriangulation({
+            polygon,
+            convexTriangulation: triangulation,
+            scaleFactor: 0.999,
+        });
         setInnerTriangulation(innerTriangulation)
     }
 

@@ -99,18 +99,14 @@ export const getPolygonHull = ({
 export const getInnerTriangulation = ({
     polygon,
     convexTriangulation,
+    scaleFactor = 0.999,
 }: {
     polygon: Polygon,
-    convexTriangulation: Array<Point[]>
+    convexTriangulation: Array<Point[]>,
+    scaleFactor?: number
 }): Array<Point[]> => {
     return convexTriangulation.filter((points) => {
-        const line1: [Point, Point] = [points[0], points[1]];
-        const line2: [Point, Point] = [points[0], points[2]];
-        const line3: [Point, Point] = [points[1], points[2]];
-
-        return [line1, line2, line3].every((line) => {
-            const midPoint = geometric.lineMidpoint(line);
-            return geometric.pointInPolygon(midPoint, polygon) || geometric.pointOnPolygon(midPoint, polygon);
-        })
+        const scaledTriangle = geometric.polygonScale(points, scaleFactor);
+        return geometric.polygonInPolygon(scaledTriangle, polygon);
     })
 }
