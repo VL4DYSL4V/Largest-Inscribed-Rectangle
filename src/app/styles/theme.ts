@@ -10,4 +10,5 @@ export const Theme = {
     aqua: '#22cccc',
     aquaLight: '#75d7cf',
     veryLightBlue: 'aliceblue',
+    violetLight: '#ac15f2',
 }
