@@ -7,8 +7,6 @@ export const Theme = {
     darkGrey3: '#211e20',
     grey: '#cccccc',
     lightGrey: '#EEEEEE',
-    aqua: '#22cccc',
-    aquaLight: '#75d7cf',
-    veryLightBlue: 'aliceblue',
-    violetLight: '#ac15f2',
+    aqua: '#6ad0f2',
+    aquaLight: '#6af2d2',
 }

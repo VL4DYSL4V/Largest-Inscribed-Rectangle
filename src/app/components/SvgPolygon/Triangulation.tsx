@@ -8,10 +8,12 @@ export const Triangulation = ({
                                   triangulation,
                                   fill = Theme.aqua,
                                   stroke = Theme.red,
+    opacity = 0.5,
                               }: {
     triangulation: Array<Point[]>,
     fill?: string,
     stroke?: string,
+    opacity?: number,
 }) => {
     return (
         <>
@@ -23,6 +25,7 @@ export const Triangulation = ({
                     return (
                         <>
                             <TransparentPolygon
+                                opacity={opacity}
                                 fill={fill}
                                 points={stringifyPolygonPoints(points)}
                             />

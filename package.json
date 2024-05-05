@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.3.0",
     "delaunator": "^5.0.1",
     "geometric": "^2.5.4",
+    "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.0",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@types/delaunator": "^5.0.2",
-    "@types/geometric": "^2.5.3"
+    "@types/geometric": "^2.5.3",
+    "@types/lodash": "^4.17.1"
   }
 }

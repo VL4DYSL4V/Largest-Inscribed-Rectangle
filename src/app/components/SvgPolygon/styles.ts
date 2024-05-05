@@ -30,12 +30,12 @@ export const Polygon = styled.polygon<{ fill?: string }>`
 
 `;
 
-export const TransparentPolygon = styled.polygon<{ fill?: string }>`
+export const TransparentPolygon = styled.polygon<{ fill?: string, opacity?: number }>`
 
   width: 100%;
   height: 100%;
 
   fill: ${({fill}: { fill?: string }) => fill ? fill : ''};
-  opacity: 0.5;
+  opacity: ${({opacity}: { opacity?: number }) => opacity ? opacity : 0};
 
 `;

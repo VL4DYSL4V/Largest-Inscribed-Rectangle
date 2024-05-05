@@ -10,10 +10,17 @@ import {Button} from "./components/Button";
 import {SvgContainer} from "./components/SvgContainer";
 import {SvgPolygon} from "./components/SvgPolygon";
 import {ComponentIds} from "./enums/componentIds";
-import {getInnerTriangulation, getPolygonBounds, getPolygonHull, getRandomPolygon} from "./service/polygonService";
+import {
+    flattenInnerTriangulation, getInnerConvexHull,
+    getInnerTriangulation,
+    getPolygonBounds,
+    getPolygonHull,
+    getRandomPolygon,
+    getTriangulationPiecesOfBiggestAreaWithNoPointsInside
+} from "./service/polygonService";
 import {PolygonBounds, PolygonParams} from "./types/polygonTypes";
 import {triangulate} from "./service/triangulationService";
-import {Point} from "./types/math";
+import {Point, Polygon} from "./types/math";
 
 
 const getPolygonParams = (): PolygonParams => {
@@ -37,9 +44,11 @@ const getPolygonParams = (): PolygonParams => {
 function App() {
     const [amountOfPoints, setAmountOfPoints] = React.useState<number>(20);
     const [polygon, setPolygon] = React.useState<Array<[number, number]>>([]);
+    const [polygonParams, setPolygonParams] = React.useState<PolygonParams | undefined>(undefined);
     const [polygonBounds, setPolygonBounds] = React.useState<PolygonBounds | undefined>(undefined);
     const [triangulation, setTriangulation] = React.useState<Array<Point[]> | undefined>(undefined);
     const [innerTriangulation, setInnerTriangulation] = React.useState<Array<Point[]> | undefined>(undefined);
+    const [innerConvexHull, setInnerConvexHull] = React.useState<Array<[number, number]> | undefined>(undefined);
 
 
     const onInputAmountOfPoints = (value: string) => {
@@ -52,8 +61,10 @@ function App() {
 
     const clearSolution = () => {
         setPolygonBounds(undefined);
+        setPolygonParams(undefined);
         setTriangulation(undefined);
         setInnerTriangulation(undefined);
+        setInnerConvexHull(undefined);
     }
 
     const onRegeneratePolygon = () => {
@@ -67,9 +78,13 @@ function App() {
             maxRadius: Math.min(polygonParams.width / 2.3, polygonParams.height / 2.3),
         });
         setPolygon(polygon);
+        setPolygonParams(polygonParams);
     }
 
     const onBuildLargestInscribedRectangle = () => {
+        if (!polygonParams) {
+            return;
+        }
         const polygonBounds = getPolygonBounds({polygon: polygon});
         setPolygonBounds(polygonBounds);
         const triangulation = triangulate({ polygon });
@@ -79,7 +94,12 @@ function App() {
             convexTriangulation: triangulation,
             scaleFactor: 0.999,
         });
-        setInnerTriangulation(innerTriangulation)
+        setInnerTriangulation(innerTriangulation);
+
+        const innerConvexHull = getInnerConvexHull({
+            polygon,
+        });
+        setInnerConvexHull(innerConvexHull);
     }
 
     React.useEffect(() => {
@@ -118,6 +138,7 @@ function App() {
                         polygonBounds={polygonBounds}
                         triangulation={triangulation}
                         innerTriangulation={innerTriangulation}
+                        innerConvexHull={innerConvexHull}
                     />
                 </SvgContainer>
             </AppScreenContentWrapper>
