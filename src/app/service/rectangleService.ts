@@ -184,12 +184,12 @@ const y_east = (i: number, val: number, region: Point2D[]): boolean => {
 
 /* Binary Search to find the x that give max area */
 const BS_xMaxArea = (f: (index: number, regName: string) => number, region: Point2D[], reg_name: string, x_min: number, x_max: number): number => {
-    let i;
+    let i = 0;
     let u = x_max;
     let l = x_min;
     let flag = true;
     let counter = 0;
-    while (flag && counter < 10) {
+    while (flag && counter < 100) {
         counter = counter + 1;
         i = int((l + u) / 2);
         //console.log("BS_xMA-i & reg_name", i, " ", reg_name);
@@ -208,7 +208,7 @@ const BS_xMaxArea = (f: (index: number, regName: string) => number, region: Poin
             return i;
         }
     }
-    throw new Error('Could not find max area');
+    return i;
 }
 
 /** Find the largest area rectangle // to axes*/
@@ -278,7 +278,7 @@ const searchLargestRectangle = ({points}: { points: Array<Point2D> }) => {
         } catch (error) {
             sol_w = undefined;
             west_solution = 0;
-            console.error("west error");
+            console.error("west error: " + error);
         }
 
         if (isNaN(Number(west_solution))) {
@@ -302,7 +302,7 @@ const searchLargestRectangle = ({points}: { points: Array<Point2D> }) => {
         } catch (error) {
             sol_e = undefined;
             east_solution = 0;
-            console.error("east error");
+            console.error("east error: " + error);
         }
         if (isNaN(Number(east_solution))) {
             east_solution = 0;

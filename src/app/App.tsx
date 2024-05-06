@@ -10,11 +10,9 @@ import {Button} from "./components/Button";
 import {SvgContainer} from "./components/SvgContainer";
 import {SvgPolygon} from "./components/SvgPolygon";
 import {ComponentIds} from "./enums/componentIds";
-import {getInnerConvexHull, getInnerTriangulation, getPolygonBounds, getRandomPolygon} from "./service/polygonService";
+import {getInnerConvexHull, getRandomPolygon} from "./service/polygonService";
 import {PolygonBounds, PolygonParams} from "./types/polygonTypes";
-import {triangulate} from "./service/triangulationService";
 import {Point} from "./types/math";
-import {getMaxRectangle} from "./service/rectangleService";
 import {point2DToPoint, pointToPoint2D} from "./adapters/polygonAdapter";
 
 
@@ -37,14 +35,13 @@ const getPolygonParams = (): PolygonParams => {
 }
 
 function App() {
-    const [amountOfPoints, setAmountOfPoints] = React.useState<number>(20);
+    const [amountOfPoints, setAmountOfPoints] = React.useState<number>(50);
     const [polygon, setPolygon] = React.useState<Array<[number, number]>>([]);
     const [polygonParams, setPolygonParams] = React.useState<PolygonParams | undefined>(undefined);
     const [polygonBounds, setPolygonBounds] = React.useState<PolygonBounds | undefined>(undefined);
     const [triangulation, setTriangulation] = React.useState<Array<Point[]> | undefined>(undefined);
-    const [innerTriangulation, setInnerTriangulation] = React.useState<Array<Point[]> | undefined>(undefined);
     const [innerConvexHull, setInnerConvexHull] = React.useState<Array<[number, number]> | undefined>(undefined);
-    const [maxRectangleBounds, setMaxRectangleBounds] = React.useState<PolygonBounds | undefined>(undefined);
+    const [maxRectangle, setMaxRectangle] = React.useState<Array<[number, number]> | undefined>(undefined);
 
     const onInputAmountOfPoints = (value: string) => {
         const asNumber = Number(value);
@@ -58,9 +55,8 @@ function App() {
         setPolygonBounds(undefined);
         setPolygonParams(undefined);
         setTriangulation(undefined);
-        setInnerTriangulation(undefined);
         setInnerConvexHull(undefined);
-        setMaxRectangleBounds(undefined);
+        setMaxRectangle(undefined);
     }
 
     const onRegeneratePolygon = () => {
@@ -81,31 +77,20 @@ function App() {
         if (!polygonParams) {
             return;
         }
-        const polygonBounds = getPolygonBounds({polygon: polygon});
-        setPolygonBounds(polygonBounds);
-        const triangulation = triangulate({polygon});
-        setTriangulation(triangulation);
-        const innerTriangulation = getInnerTriangulation({
-            polygon,
-            convexTriangulation: triangulation,
-            scaleFactor: 0.999,
-        });
-        setInnerTriangulation(innerTriangulation);
-
         const innerConvexHull = getInnerConvexHull({
             polygon,
         });
         setInnerConvexHull(innerConvexHull);
 
-        const maxRectangle = getMaxRectangle({
-            points: innerConvexHull.map(pointToPoint2D),
-            vertices: innerConvexHull.map(pointToPoint2D),
-        });
-        const maxRectangleGeometric = maxRectangle.map(point2DToPoint);
-        const maxRectangleBounds = getPolygonBounds({
-            polygon: maxRectangleGeometric,
-        });
-        setMaxRectangleBounds(maxRectangleBounds);
+        // @ts-ignore
+        window.points = innerConvexHull.map(pointToPoint2D);
+        // @ts-ignore
+        window.convexhull();
+        // @ts-ignore
+        window.launchAlgorithm();
+        // @ts-ignore
+        const maxRectangleGeometric = window.array_r.map(point2DToPoint);
+        setMaxRectangle(maxRectangleGeometric);
     }
 
     React.useEffect(() => {
@@ -143,9 +128,8 @@ function App() {
                         id={ComponentIds.SVG_POLYGON}
                         polygonBounds={polygonBounds}
                         triangulation={triangulation}
-                        innerTriangulation={innerTriangulation}
                         innerConvexHull={innerConvexHull}
-                        maxRectangleBounds={maxRectangleBounds}
+                        maxRectangle={maxRectangle}
                     />
                 </SvgContainer>
             </AppScreenContentWrapper>
