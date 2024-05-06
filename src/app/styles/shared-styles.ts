@@ -1,4 +1,4 @@
-import { css } from 'styled-components';
+import {css} from 'styled-components';
 
 const unselectableText = css`
     -webkit-touch-callout: none; /* iOS Safari */

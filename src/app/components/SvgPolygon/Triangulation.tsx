@@ -8,7 +8,7 @@ export const Triangulation = ({
                                   triangulation,
                                   fill = Theme.aqua,
                                   stroke = Theme.red,
-    opacity = 0.5,
+                                  opacity = 0.5,
                               }: {
     triangulation: Array<Point[]>,
     fill?: string,

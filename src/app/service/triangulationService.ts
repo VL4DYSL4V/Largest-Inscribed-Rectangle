@@ -6,8 +6,8 @@ const flattenPointsForDelaunator = (points: Array<Point>): Array<number> => {
 }
 
 export const triangulate = ({
-    polygon,
-}: {
+                                polygon,
+                            }: {
     polygon: Polygon,
 }): Array<Point[]> => {
     const flatPolygon = flattenPointsForDelaunator(polygon);

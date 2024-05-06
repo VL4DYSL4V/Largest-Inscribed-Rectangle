@@ -16,16 +16,16 @@ export const getRandomInt = (min: number, max: number) => {
 }
 
 export const getRandomNumbersInInterval = ({
-    interval: [min, max],
-    amount,
-                                      }: {
+                                               interval: [min, max],
+                                               amount,
+                                           }: {
     interval: [min: number, max: number],
     amount: number,
 }): Array<number> => {
     const result = [];
     const equalSubIntervalLength = (max - min) / amount;
 
-    let currentSign = getRandomSign();
+    let currentSign = 1;
     let currentDelta = getRandomInt(0, equalSubIntervalLength / 2);
 
     for (let i = 0; i < amount; i++) {
@@ -44,7 +44,7 @@ export const getRandomNumbersInInterval = ({
             currentSign = currentSign *= -1;
         }
 
-        const newNumber = i * equalSubIntervalLength + currentSign * currentDelta;
+        const newNumber = min + i * equalSubIntervalLength + currentSign * currentDelta;
         result.push(newNumber);
 
         if (i % 2 === 0) {

@@ -13,6 +13,7 @@ export const SvgPolygon = ({
                                innerConvexHull = [],
                                triangulation = [],
                                innerTriangulation = [],
+                               maxRectangleBounds = undefined,
                                id
                            }: {
     polygonPoints: Array<[number, number]>,
@@ -20,6 +21,7 @@ export const SvgPolygon = ({
     triangulation?: Array<Point[]>,
     innerTriangulation?: Array<Point[]>,
     polygonBounds?: PolygonBounds,
+    maxRectangleBounds?: PolygonBounds,
     id?: string,
 }) => {
     const triangulationBoundsColor = Theme.red;
@@ -42,14 +44,18 @@ export const SvgPolygon = ({
                 fill={triangulationColor}
                 opacity={0.4}
             />
-            {/*<Triangulation*/}
-            {/*    triangulation={innerTriangulation}*/}
-            {/*    stroke={triangulationBoundsColor}*/}
-            {/*    fill={innerTriangulationColor}*/}
-            {/*    opacity={0.5}*/}
-            {/*/>*/}
-            {/*<Polygon fill={Theme.black} points={stringifyPolygonPoints(triangulationPolygonWithBiggestAreaAndNoPointsInside)}/>*/}
+            <Triangulation
+                triangulation={innerTriangulation}
+                stroke={triangulationBoundsColor}
+                fill={innerTriangulationColor}
+                opacity={0.5}
+            />
             <Polygon fill={Theme.black} points={stringifyPolygonPoints(innerConvexHull)}/>
+
+            <PolygonBoundsLines
+                stroke={polygonBoundsColor}
+                polygonBounds={maxRectangleBounds}
+            />
         </SVG>
     )
 }
